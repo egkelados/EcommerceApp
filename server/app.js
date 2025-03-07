@@ -42,5 +42,5 @@ app.post('/movies', (req, res) => {
 
 //start the server
 app.listen(8080, () => {
-    console.log('Server is running ')
+    console.log('Server is running at http://localhost:8080 ')
 })
