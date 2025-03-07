@@ -1,43 +1,30 @@
 const express = require('express')
+const models = require('./models')
 const app = express()
 
-const movies = [{title: 'Lordasdas dasd dad adas', genre: 'Fiction'}, {title: 'Lordasdas dasd dad adas', genre: 'action'}, {title: 'Lordasdas dasd dad adas', genre: 'Kids'}]
+// JSON parser
+app.use(express.json())// this is a middleware so the request will be parsed as JSON
 
-app.use(express.json())
+app.post('/register', (req, res) => {
 
-app.get('/', (req, res) => {
-    res.send('Hello Worlds')
-})
+    const {username, password} = req.body
+    
+    //create a new user
 
-app.get('/movies', (req, res) => {
-    res.json(movies)
-})
-app.get('/about', (req, res) => {
-    res.json({message: 'Hello World'})
-})
+    const newUser = models.User.create({
+        username: username,
+        password: password
+    })
 
-app.get('/movies/:genre', (req, res) => {
-
-    const genre = req.params.genre
-    const filteredMovies = movies.filter(movies => movies.genre.toLowerCase() === genre.toLowerCase())
-    res.json(filteredMovies)
-
-    // res.send(`You selected ${genre} movies`)
-})
+    //validate the request
+    if use
+    res.status(201).json({ success: true})
+    
 
 
-app.get('/movies/:genre/year/:year', (req, res) => {
 
-    const genre = req.params.genre
-    const year = parseInt(req.params.year)
 
-    res.send(`You selected ${genre} movies and the year is ${year}`)
-})
 
-app.post('/movies', (req, res) => {
-    console.log(req.body)
-    const {title, genre} = req.body
-    res.send('OK')
 })
 
 //start the server
