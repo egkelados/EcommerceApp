@@ -2,7 +2,7 @@
 //  SmartShopApp.swift
 //  SmartShop
 //
-//  Created by Xristos Mantsos on 27/2/25.
+//  Created by Xristos Mantsos on 7/3/25.
 //
 
 import SwiftUI
