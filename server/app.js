@@ -1,11 +1,24 @@
-const express = require('express')
-const models = require('./models')
+const express = require('express');
+const models = require('./models');
+const { body, validationResult } = require('express-validator');
 const app = express()
 
 // JSON parser
 app.use(express.json())// this is a middleware so the request will be parsed as JSON
 
-app.post('/register', (req, res) => {
+const registerValidator = [
+    body('username', 'username cannot be emty!').not().isEmpty(),
+    body('password', 'password cannot be emty!').not().isEmpty()
+]
+
+app.post('/register', registerValidator, (req, res) => {
+
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        const mes = errors.array().map(e => e.msg).join(', ')
+        return res.status(422).json({ success: false , errors: mes })
+    }
+    
 
     const {username, password} = req.body
     
@@ -17,7 +30,9 @@ app.post('/register', (req, res) => {
     })
 
     //validate the request
-    if use
+
+
+
     res.status(201).json({ success: true})
     
 
