@@ -1,6 +1,7 @@
 const express = require("express");
 const models = require("./models");
 const { Op } = require("sequelize");
+const bcrypt = require("bcryptjs");
 const { body, validationResult } = require("express-validator");
 const app = express();
 
@@ -35,11 +36,14 @@ app.post("/register", registerValidator, async (req, res) => {
       return res.json({ success: false, errors: "Username already exists" });
     }
 
-    //create a new user
+    //create a password hash
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
 
-    const newUser = models.User.create({
+    //create a new user
+    const _ = models.User.create({
       username: username,
-      password: password,
+      password: hash,
     });
 
     res.status(201).json({ success: true });
