@@ -1,5 +1,7 @@
 import SwiftUI
 
+
+//TODO: Refactor add VM for this view
 struct RegistrationView: View {
   @Environment(\.authenticationController) var authenticationController
   @Environment(\.dismiss) var dismiss
