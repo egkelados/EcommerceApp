@@ -13,14 +13,14 @@ const registerValidator = [
   body("password", "password cannot be emty!").not().isEmpty(),
 ];
 
-app.post("/register", registerValidator, async (req, res) => {
+app.post("/api/auth/register", registerValidator, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const mes = errors
       .array()
       .map((e) => e.msg)
       .join(", ");
-    return res.status(422).json({ success: false, errors: mes });
+    return res.status(422).json({ success: false, message: mes });
   }
 
   try {
@@ -33,7 +33,7 @@ app.post("/register", registerValidator, async (req, res) => {
     });
 
     if (existingUser) {
-      return res.json({ success: false, errors: "Username already exists" });
+      return res.json({ success: false, message: "Username already exists" });
     }
 
     //create a password hash
@@ -49,7 +49,7 @@ app.post("/register", registerValidator, async (req, res) => {
     res.status(201).json({ success: true });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, errors: "Internal server error" });
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
 
