@@ -20,7 +20,7 @@ exports.login = async (req, res) => {
 
     // check if the user exists
 
-    const user = await models.USer.findOne({
+    const user = await models.User.findOne({
       where: {
         username: { [Op.iLike]: username }, // insensitive search
       },
