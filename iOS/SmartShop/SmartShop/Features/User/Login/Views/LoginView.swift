@@ -29,6 +29,7 @@ struct LoginView: View {
       print(token)
       // set the token in keychain
       Keychain.set(token, forKey: "jwttoken")
+      
       // set userId in Userdefaults
       self.userId = userId
 
@@ -58,7 +59,7 @@ struct LoginView: View {
     }
     .navigationTitle("Login")
     .navigationDestination(item: $userId) { _ in
-      Text("Home screen")        
+      Text("Home screen")
         .navigationTitle("Home Screen")
     }
     .alert("Error", isPresented: $isErrorMessage, actions: {
