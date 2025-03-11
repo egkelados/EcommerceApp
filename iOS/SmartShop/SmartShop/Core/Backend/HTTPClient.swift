@@ -25,6 +25,8 @@ enum HTTPMethod {
   }
 }
 
+// MARK: Generic resource for the request 
+
 struct Resource<T: Codable> {
   let url: URL
   let method: HTTPMethod

@@ -21,7 +21,3 @@ extension NetworkError: LocalizedError {
     }
   }
 }
-
-struct ErrorResponse: Codable, Error {
-  let message: String?
-}
