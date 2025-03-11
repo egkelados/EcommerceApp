@@ -11,13 +11,16 @@ extension NetworkError: LocalizedError {
   var errorDescription: String? {
     switch self {
     case .badRequest:
-      NSLocalizedString("Bad Request (400): Unable to perform the request", comment: "badRequestError")
+      return NSLocalizedString("Bad Request (400): Unable to perform the request", comment: "badRequestError")
     case .decodingError(let error):
-      NSLocalizedString("Unable to decode successful response: \(error)", comment: "decodingError")
+      return NSLocalizedString("Unable to decode successful response: \(error)", comment: "decodingError")
     case .invalidResponse:
-      NSLocalizedString("Invalid server response", comment: "invalidResponseError")
+      return NSLocalizedString("Invalid server response", comment: "invalidResponseError")
     case .errorResponse(let error):
-      NSLocalizedString("Server returned an error: \(error)", comment: "ErrorResponse")
+      if let errorResponse = error as? ErrorResponse,
+         let message = errorResponse.message
+      { return message }
+      return NSLocalizedString("Server returned an error: \(error)", comment: "ErrorResponse")
     }
   }
 }
