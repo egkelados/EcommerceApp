@@ -6,6 +6,7 @@ struct ProfileView: View {
   var body: some View {
     Button("Signout") {
       let _ = Keychain<String>.delete("jwttoken")
+      userId = nil
     }
   }
 }

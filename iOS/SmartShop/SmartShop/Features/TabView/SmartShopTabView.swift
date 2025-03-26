@@ -28,8 +28,10 @@ enum AppScreen: Hashable, Identifiable, CaseIterable {
     case .home:
       Text("Home")
     case .myProducts:
-      Text("My Products")
-        .requiresAuthentication()
+      NavigationStack {
+        Text("My Products")
+          .requiresAuthentication()
+      }
     case .cart:
       Text("Cart")
         .requiresAuthentication()

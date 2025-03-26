@@ -29,7 +29,7 @@ struct LoginView: View {
       print(token)
       // set the token in keychain
       Keychain.set(token, forKey: "jwttoken")
-      
+
       // set userId in Userdefaults
       self.userId = userId
 
@@ -58,17 +58,13 @@ struct LoginView: View {
       .disabled(!isFormValid)
     }
     .navigationTitle("Login")
-    .navigationDestination(item: $userId) { _ in
-      Text("Home screen")
-        .navigationTitle("Home Screen")
-    }
     .alert("Error", isPresented: $isErrorMessage, actions: {
       Button("OK", role: .cancel) {
         isErrorMessage = false
       }
     }, message: {
       Text(message)
-    })// replace that with bottom message
+    }) // replace that with bottom message
   }
 }
 
