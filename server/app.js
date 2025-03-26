@@ -15,3 +15,7 @@ app.use("/api/auth", authRoutes);
 app.listen(8080, () => {
   console.log("Server is running at http://localhost:8080 ");
 });
+
+app.get("/ping", (req, res) => {
+  res.send("pong");
+});
