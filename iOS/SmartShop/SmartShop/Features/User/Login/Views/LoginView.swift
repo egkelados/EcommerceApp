@@ -68,7 +68,7 @@ struct LoginView: View {
       }
     }, message: {
       Text(message)
-    })
+    })// replace that with bottom message
   }
 }
 
