@@ -17,6 +17,13 @@ struct Product: Codable, Identifiable {
   }
 }
 
+struct UploadDataResponse: Codable {
+  let message: String?
+  let success: Bool
+  let downloadURL: URL?
+  
+}
+
 extension Product {
   static var preview: Product {
     Product(id: 1, name: "Luxury chair", description: "This is one fantastic chair that will make you feel like a king or queen of the world ! It is made of the finest materials and has a design that is sure to turn heads.", price: 252.0, photoURL: URL(string: "http://localhost:8080/api/uploads/chair1.png"), userId: 5)
