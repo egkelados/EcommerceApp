@@ -6,7 +6,7 @@ const app = express();
 const authRoutes = require("./routes/auth");
 const productRoutes = require("./routes/product");
 
-app.use("/uploads", express.static("uploads")); // serve the iploads folder as static files
+app.use("/api/uploads", express.static("uploads")); // serve the iploads folder as static files
 
 // JSON parser
 app.use(express.json()); // this is a middleware so the request will be parsed as JSON
