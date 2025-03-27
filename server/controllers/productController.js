@@ -1,5 +1,57 @@
 const { validationResult } = require("express-validator");
+const multer = require("multer");
+const path = require("path");
 const models = require("../models");
+
+// configure multer for file storage
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    cb(null, file.fieldname + "-" + Date.now() + ext);
+  },
+});
+
+//setting up multer for image upload
+const uploadImage = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5, // 5MB
+  },
+  fileFilter: function (req, file, cb) {
+    const fileTypes = /jpeg|jpg|png/;
+    const extname = fileTypes.test(
+      path.extname(file.originalname).toLowerCase()
+    );
+    const mimetype = fileTypes.test(file.mimetype);
+
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb(new Error("Only images are allowed"));
+    }
+  },
+}).single("image");
+
+exports.upload = async (req, res) => {
+  uploadImage(req, res, (err) => {
+    if (err) {
+      return res.status(400).json({ success: false, message: err.message });
+    }
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Please select an image" });
+    }
+    const baseUrl = `${req.protocol}://${req.get("host")}`; // http://localhost:8080 construct the base URL
+    const filePath = `/api/uploads/${req.file.filename}`; // http://localhost:8080/api/uploads/filename
+    const fileUrl = `${baseUrl}${filePath}`;
+    res.json({ success: true, url: fileUrl, message: "Image uploaded" });
+  });
+};
 
 exports.getAllProducts = async (req, res) => {
   const products = await models.Product.findAll();

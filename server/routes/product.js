@@ -14,5 +14,6 @@ const productValidator = [
 router.get("/", productController.getAllProducts);
 router.post("/", productValidator, productController.create);
 router.get("/user/:user_id", productController.getMyProducts);
+router.post("/uploads", productController.upload);
 
 module.exports = router;
