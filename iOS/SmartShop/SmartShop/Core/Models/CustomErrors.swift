@@ -6,3 +6,7 @@ enum ProductSaveError: Error {
   case operationFailed(String)
   case missingImage
 }
+
+enum UserError: Error {
+  case missingId
+}

@@ -28,4 +28,10 @@ class ProductStore {
       throw ProductSaveError.operationFailed(response.message ?? "")
     }
   }
+
+  func loadMyProduct(by userId: Int) async throws {
+    let resource = Resource(url: CoreEndpoint.myProducts(userId).url, modelType: [Product].self)
+
+    myProducts = try await httpClient.load(resource)
+  }
 }

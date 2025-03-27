@@ -13,6 +13,7 @@ enum CoreEndpoint: Endpoint {
   case login
   case register
   case products
+  case myProducts(Int)
 
   var path: String {
     switch self {
@@ -22,6 +23,8 @@ enum CoreEndpoint: Endpoint {
       return "auth/register"
     case .products:
       return "products"
+    case let .myProducts(userId):
+      return "products/user/\(userId)"
     }
   }
 }
