@@ -29,7 +29,7 @@ enum AppScreen: Hashable, Identifiable, CaseIterable {
       ProductListScreen()
     case .myProducts:
       NavigationStack {
-        Text("My Products")
+        MyProductListScreen()
           .requiresAuthentication()
       }
     case .cart:
@@ -58,5 +58,8 @@ struct SmartShopTabView: View {
 }
 
 #Preview {
-  SmartShopTabView()
+  NavigationStack {
+    SmartShopTabView()
+  }
+  .environment(ProductStore(httpClient: .development))
 }
