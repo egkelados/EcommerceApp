@@ -26,7 +26,7 @@ enum AppScreen: Hashable, Identifiable, CaseIterable {
   var destination: some View {
     switch self {
     case .home:
-      Text("Home")
+      ProductListScreen()
     case .myProducts:
       NavigationStack {
         Text("My Products")
