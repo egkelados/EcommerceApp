@@ -6,6 +6,25 @@ exports.getAllProducts = async (req, res) => {
   res.json(products);
 };
 
+// /api/products/user/6
+exports.getMyProducts = async (req, res) => {
+  try {
+    const userId = req.params.user_id;
+    const products = await models.Product.findAll({
+      where: {
+        user_id: userId,
+      },
+    });
+
+    res.json(products);
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ success: false, message: "Error retrieving products" });
+  }
+};
+
 exports.create = async (req, res) => {
   const errors = validationResult(req);
 
