@@ -21,7 +21,11 @@ struct UploadDataResponse: Codable {
   let message: String?
   let success: Bool
   let downloadURL: URL?
-  
+
+  private enum CodingKeys: String, CodingKey {
+    case message, success
+    case downloadURL = "url"
+  }
 }
 
 extension Product {

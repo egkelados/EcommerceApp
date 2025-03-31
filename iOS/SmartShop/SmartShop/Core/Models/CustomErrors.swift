@@ -5,6 +5,7 @@ enum ProductSaveError: Error {
   case invalidPrice
   case operationFailed(String)
   case missingImage
+  case uploadFailed(String)
 }
 
 enum UserError: Error {

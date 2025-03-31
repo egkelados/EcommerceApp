@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 extension EnvironmentValues {
-  @Entry var uploaderEnvironmentKey = ImageUploader(httpClient: HTTPClient())
+  @Entry var uploader = ImageUploader(httpClient: HTTPClient())
 }
 
 /// refactor to one file in extensions........!!!!!

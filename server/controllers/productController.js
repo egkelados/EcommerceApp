@@ -89,6 +89,9 @@ exports.create = async (req, res) => {
   }
 
   const { name, description, price, photo_url, user_id } = req.body;
+
+  console.log(req.body);
+
   try {
     const newProduct = await models.Product.create({
       name: name,
