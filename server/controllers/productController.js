@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 const multer = require("multer");
 const path = require("path");
 const models = require("../models");
+const { getFileNameFromUrl, deleteFile } = require("../Utils/fileUtils");
 
 // configure multer for file storage
 
@@ -36,6 +37,7 @@ const uploadImage = multer({
   },
 }).single("image");
 
+//upload image
 exports.upload = async (req, res) => {
   uploadImage(req, res, (err) => {
     if (err) {
@@ -53,11 +55,13 @@ exports.upload = async (req, res) => {
   });
 };
 
+//get all products
 exports.getAllProducts = async (req, res) => {
   const products = await models.Product.findAll();
   res.json(products);
 };
 
+// get my products
 // /api/products/user/6
 exports.getMyProducts = async (req, res) => {
   try {
@@ -77,6 +81,7 @@ exports.getMyProducts = async (req, res) => {
   }
 };
 
+//create product
 exports.create = async (req, res) => {
   const errors = validationResult(req);
 
@@ -107,5 +112,56 @@ exports.create = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+exports.deleteProduct = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    const msg = errors
+      .array()
+      .map((e) => e.msg)
+      .join(", ");
+    return res.status(422).json({ success: false, message: msg });
+  }
+
+  const productId = req.params.productId;
+  try {
+    const product = await models.Product.findByPk(productId);
+    if (!product) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
+    }
+
+    const fileName = getFileNameFromUrl(product.photo_url);
+
+    // delete the product
+    const result = await models.Product.destroy({
+      where: {
+        id: productId,
+      },
+    });
+
+    if (result == 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
+    }
+
+    //delete file
+
+    await deleteFile(fileName);
+
+    return res.status(200).json({
+      success: true,
+      message: `Product with ID ${productId} deleted succesfully`,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: `Error deleting product ${err.message}`,
+    });
   }
 };
