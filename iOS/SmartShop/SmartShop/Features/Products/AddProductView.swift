@@ -28,7 +28,7 @@ struct AddProductView: View {
       guard let downloadURL = uploadDataResponse.downloadURL, uploadDataResponse.success else {
         throw ProductSaveError.uploadFailed(uploadDataResponse.message ?? "")
       }
-      
+
       print(downloadURL)
 
       guard let userId = userId else {
@@ -65,17 +65,16 @@ struct AddProductView: View {
           .aspectRatio(contentMode: .fit)
       }
     }
-    .onChange(of: selectedImage) {
-      selectedImage?.loadTransferable(type: Data.self, completionHandler: { result in
-        switch result {
-        case .success(let success):
-          if let data = success {
+    .task(id: selectedImage) {
+      if let selectedImage {
+        do {
+          if let data = try await selectedImage.loadTransferable(type: Data.self) {
             uiImage = UIImage(data: data)
           }
-        case .failure(let failure):
-          print(failure.localizedDescription)
+        } catch {
+          print(error.localizedDescription)
         }
-      })
+      }
     }
     .toolbar {
       ToolbarItem(placement: .topBarTrailing) {

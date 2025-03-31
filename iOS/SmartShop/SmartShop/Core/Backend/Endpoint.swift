@@ -15,6 +15,7 @@ enum CoreEndpoint: Endpoint {
   case products
   case myProducts(Int)
   case uploadProductImage
+  case deleteProduct(Int)
 
   var path: String {
     switch self {
@@ -28,6 +29,8 @@ enum CoreEndpoint: Endpoint {
       return "products/user/\(userId)"
     case .uploadProductImage:
       return "products/uploads"
+    case let .deleteProduct(id):
+      return "products/\(id)"
     }
   }
 }

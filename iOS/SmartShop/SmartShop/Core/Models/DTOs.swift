@@ -2,7 +2,7 @@ import Foundation
 
 // place all the models inside here and refactor the rest...
 
-struct Product: Codable, Identifiable {
+struct Product: Codable, Identifiable, Hashable {
   var id: Int?
   let name: String
   let description: String
@@ -26,6 +26,11 @@ struct UploadDataResponse: Codable {
     case message, success
     case downloadURL = "url"
   }
+}
+
+struct DeleteProductResponse: Codable {
+  let success: Bool
+  let message: String? 
 }
 
 extension Product {

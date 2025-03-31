@@ -19,6 +19,24 @@ class ProductStore {
     products = try await httpClient.load(resource)
   }
 
+  @MainActor
+  func deleteProduct(_ product: Product) async throws {
+    guard let productId = product.id else {
+      throw ProductSaveError.productNotFound
+    }
+
+    let resource = Resource(url: CoreEndpoint.deleteProduct(productId).url, method: .delete, modelType: DeleteProductResponse.self)
+    let response = try await httpClient.load(resource)
+
+    if response.success {
+      if let indexToDelete = myProducts.firstIndex(where: { $0.id == productId }) {
+        myProducts.remove(at: indexToDelete)
+      } else {
+        throw ProductSaveError.operationFailed("Product not found in my products")
+      }
+    }
+  }
+
   func saveProduct(_ product: Product) async throws {
     let resource = Resource(url: CoreEndpoint.products.url, method: HTTPMethod.post(product.encode()), modelType: CreateProductResponse.self)
     let response = try await httpClient.load(resource)
