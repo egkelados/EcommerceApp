@@ -88,7 +88,7 @@ exports.register = async (req, res) => {
     const hash = await bcrypt.hash(password, salt);
 
     //create a new user
-    const _ = models.User.create({
+    const _ = await models.User.create({
       username: username,
       password: hash,
     });

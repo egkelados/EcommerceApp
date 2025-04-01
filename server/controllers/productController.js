@@ -68,6 +68,7 @@ exports.getAllProducts = async (req, res) => {
 exports.getMyProducts = async (req, res) => {
   try {
     const userId = req.params.user_id;
+
     const products = await models.Product.findAll({
       where: {
         user_id: userId,

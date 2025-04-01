@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const productController = require("../controllers/productController");
 const { body, param } = require("express-validator");
+const authenticate = require("../middlewares/authMiddleware");
 
 const productValidator = [
   body("name", "name cannot be empty!").not().isEmpty(),
@@ -39,7 +40,7 @@ const updateProductValidator = [
 // api/products
 router.get("/", productController.getAllProducts);
 router.post("/", productValidator, productController.create);
-router.get("/user/:user_id", productController.getMyProducts);
+router.get("/user/:user_id", authenticate, productController.getMyProducts);
 router.post("/uploads", productController.upload);
 
 //DELETE /api/products/34
