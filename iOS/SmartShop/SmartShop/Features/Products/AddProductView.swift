@@ -13,6 +13,11 @@ struct AddProductView: View {
   @Environment(\.dismiss) private var dismiss
   @AppStorage("userId") private var userId: Int?
 
+  private let product: Product?
+  init(product: Product? = nil) {
+    self.product = product
+  }
+
   private var isFormValid: Bool {
     !name.isEmpty && !description.isEmpty && (price ?? 0) > 0
   }
@@ -38,14 +43,23 @@ struct AddProductView: View {
         throw ProductSaveError.invalidPrice
       }
 
-      let product = Product(name: name, description: description, price: price, photoURL: downloadURL, userId: userId)
+      let product = Product(id: self.product?.id, name: name, description: description, price: price, photoURL: downloadURL, userId: userId)
 
-      try await productStore.saveProduct(product)
+      if self.product != nil {
+        try await productStore.updateProduct(product)
+      } else {
+        try await productStore.saveProduct(product)
+      }
+
       dismiss()
 
     } catch {
       print(error.localizedDescription)
     }
+  }
+
+  private var actionTitle: String {
+    product != nil ? "Update" : "Add"
   }
 
   var body: some View {
@@ -65,6 +79,23 @@ struct AddProductView: View {
           .aspectRatio(contentMode: .fit)
       }
     }
+    .task {
+      do {
+        guard let product = product else { return }
+        name = product.name
+        description = product.description
+        price = product.price
+
+        if let phtotoURL = product.photoURL {
+          guard let data = try await uploader.download(url: phtotoURL) else {
+            return
+          }
+          uiImage = UIImage(data: data)
+        }
+      } catch {
+        print(error.localizedDescription)
+      }
+    }
     .task(id: selectedImage) {
       if let selectedImage {
         do {
@@ -78,7 +109,7 @@ struct AddProductView: View {
     }
     .toolbar {
       ToolbarItem(placement: .topBarTrailing) {
-        Button("Save") {
+        Button(actionTitle) {
           Task {
             await saveProduct()
           }
@@ -86,7 +117,15 @@ struct AddProductView: View {
         .disabled(!isFormValid)
       }
     }
+    .navigationTitle(actionTitle + " Product")
   }
+}
+
+#Preview {
+  NavigationStack {
+    AddProductView(product: Product.preview)
+  }
+  .environment(ProductStore(httpClient: .development))
 }
 
 #Preview {

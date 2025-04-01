@@ -52,4 +52,24 @@ class ProductStore {
 
     myProducts = try await httpClient.load(resource)
   }
+
+  /// Update functino for the product
+  func updateProduct(_ product: Product) async throws {
+    guard let productId = product.id else {
+      throw ProductSaveError.productNotFound
+    }
+
+    let resource = Resource(url: CoreEndpoint.updateProduct(productId).url, method: .put(product.encode()), modelType: UpdateProductResponse.self)
+    let response = try await httpClient.load(resource)
+
+    if let updatedProduct = response.product,!response.success {
+      if let indexToUpdate = myProducts.firstIndex(where: { $0.id == productId }) {
+        myProducts[indexToUpdate] = updatedProduct
+      } else {
+        throw ProductSaveError.productNotFound
+      }
+    } else {
+      throw ProductSaveError.operationFailed(response.message ?? "Update product failed")
+    }
+  }
 }

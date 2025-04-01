@@ -1,11 +1,13 @@
 import SwiftUI
 
 struct MyProductDetailScreen: View {
-  private let product: Product
+  @State private var product: Product
   @Environment(\.dismiss) private var dismiss
   @Environment(ProductStore.self) private var productStore
+  @State private var isPresented = false
+
   init(product: Product) {
-    self.product = product
+    self._product = State(initialValue: product)
   }
 
   private func deleteProduct() async {
@@ -52,15 +54,26 @@ struct MyProductDetailScreen: View {
     }
     .toolbar {
       ToolbarItem(placement: .topBarTrailing) {
-        Button(role: .destructive) {
-          Task {
-            await deleteProduct()
+        Menu {
+          Button(role: .destructive) {
+            Task { await deleteProduct() }
+          } label: {
+            Label("Delete", systemImage: "trash")
           }
-
+          
+          Button {
+            isPresented = true
+          } label: {
+            Label("Edit", systemImage: "square.and.pencil")
+          }
         } label: {
-          Image(systemName: "trash")
-            .foregroundStyle(.red)
+          Image(systemName: "ellipsis.circle")
         }
+      }
+    }
+    .sheet(isPresented: $isPresented) {
+      NavigationStack {
+        AddProductView(product: product)
       }
     }
   }

@@ -38,4 +38,9 @@ struct ImageUploader {
     body.append("--\(boundary)--\(lineBreak)".data(using: .utf8)!)
     return body
   }
+  
+  func download(url: URL) async throws -> Data? {
+    let (data, _) = try await URLSession.shared.data(from: url)
+    return data
+  }
 }

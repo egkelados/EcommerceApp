@@ -39,13 +39,14 @@ const updateProductValidator = [
 
 // api/products
 router.get("/", productController.getAllProducts);
-router.post("/", productValidator, productController.create);
+router.post("/", authenticate, productValidator, productController.create);
 router.get("/user/:user_id", authenticate, productController.getMyProducts);
-router.post("/uploads", productController.upload);
+router.post("/uploads", authenticate, productController.upload);
 
 //DELETE /api/products/34
 router.delete(
   "/:productId",
+  authenticate,
   deleteProductValidator,
   productController.deleteProduct
 );
@@ -53,6 +54,7 @@ router.delete(
 // PUT  /api/products/34
 router.put(
   "/:productId",
+  authenticate,
   updateProductValidator,
   productController.updateProduct
 );
