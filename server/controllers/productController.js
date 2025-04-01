@@ -3,6 +3,8 @@ const multer = require("multer");
 const path = require("path");
 const models = require("../models");
 const { getFileNameFromUrl, deleteFile } = require("../Utils/fileUtils");
+const { where } = require("sequelize");
+const { use } = require("../routes/auth");
 
 // configure multer for file storage
 
@@ -162,6 +164,56 @@ exports.deleteProduct = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: `Error deleting product ${err.message}`,
+    });
+  }
+};
+
+//Update product
+
+exports.updateProduct = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const msg = errors
+      .array()
+      .map((e) => e.msg)
+      .join(", ");
+    return res.status(422).json({ success: false, message: msg });
+  }
+  try {
+    const { name, description, price, photo_url, user_id } = req.body;
+    const { productId } = req.params;
+
+    const product = await models.Product.findOne({
+      where: {
+        id: productId,
+        user_id: user_id,
+      },
+    });
+
+    if (!product) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Product not found" });
+    }
+
+    product.update({
+      name,
+      description,
+      price,
+      photo_url,
+      user_id,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: `Product with ID ${productId} updated successfully`,
+      product,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "An error occured while updating the product",
     });
   }
 };
