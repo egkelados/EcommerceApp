@@ -25,7 +25,7 @@ enum HTTPMethod {
   }
 }
 
-// MARK: Generic resource for the request 
+// MARK: Generic resource for the request
 
 struct Resource<T: Codable> {
   let url: URL
@@ -66,6 +66,17 @@ class HTTPClient: HTTPClientProtocol {
   func load<T>(_ resource: Resource<T>) async throws -> T where T: Decodable, T: Encodable {
     var request = URLRequest(url: resource.url)
 
+    var headers: [String: String] = resource.headers ?? [:]
+
+    if let token = Keychain<String>.get("jwttoken") {
+      headers["Authorization"] = "Bearer \(token)"
+    }
+    
+    // add headers to the request
+    for (key, value) in headers {
+      request.setValue(value, forHTTPHeaderField: key)
+    }
+
     switch resource.method {
     case .get(let queryItems):
       var components = URLComponents(url: resource.url, resolvingAgainstBaseURL: false)
@@ -87,11 +98,11 @@ class HTTPClient: HTTPClientProtocol {
       request.httpBody = data
     }
 
-    if let headers = resource.headers {
-      for (key, value) in headers {
-        request.setValue(value, forHTTPHeaderField: key)
-      }
-    }
+//    if let headers = resource.headers {
+//      for (key, value) in headers {
+//        request.setValue(value, forHTTPHeaderField: key)
+//      }
+//    }
 
     let (data, response) = try await session.data(for: request)
 

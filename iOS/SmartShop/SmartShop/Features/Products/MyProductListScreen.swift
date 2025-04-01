@@ -5,6 +5,7 @@ struct MyProductListScreen: View {
   @State private var isPresented = false
   @State private var selectedProduct: Product?
   @AppStorage("userId") private var userId: Int?
+  @State private var message: String?
 
   private func loadMyProducts() async {
     do {
@@ -13,6 +14,7 @@ struct MyProductListScreen: View {
       }
       try await productStore.loadMyProduct(by: userId)
     } catch {
+      message = error.localizedDescription
       print(error.localizedDescription)
     }
   }
@@ -22,15 +24,16 @@ struct MyProductListScreen: View {
       if productStore.myProducts.isEmpty {
         ContentUnavailableView(
           label: {
-            Label("There are no products", systemImage: "star.fill")
+            Label(message ?? "There are no products", systemImage: "star.fill")
           },
           description: {
-            Text("Add your first product")
+            Text(message != nil ? "Failed to proceed with loading products. Please try again later or contact support." : "Add your first product")
           },
           actions: {
             Button("Add Product") {
               isPresented = true
             }
+            .disabled(message != nil)
           }
         )
       } else {

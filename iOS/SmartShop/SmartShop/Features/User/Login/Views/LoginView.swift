@@ -17,7 +17,7 @@ struct LoginView: View {
     isErrorMessage = false
     do {
       let response = try await authenticationController.login(username: username, password: password)
-      print("Login response for user: \(response)")
+      print("Login response for user: \(response) \n\n")
       guard let token = response.token,
             let userId = response.userId,
             response.success
