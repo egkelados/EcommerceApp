@@ -31,7 +31,7 @@ const authenticate = async (req, res, next) => {
         .json({ success: false, message: "Invalid token for this user" });
     }
 
-    req.user = user;
+    req.userId = user.id;
     next();
   } catch (error) {
     console.log(error);
