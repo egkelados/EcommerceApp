@@ -41,10 +41,32 @@ exports.addItemToCart = async (req, res) => {
       await cartItem.save();
     }
 
+    //get cartItem with product
+    const cartItemWithProduct = await models.CartItem.findOne({
+      where: {
+        id: cartItem.id,
+      },
+      attributes: ["id", "cart_id", "product_id", "quantity"],
+      include: [
+        {
+          model: models.Product,
+          as: "product",
+          attributes: [
+            "id",
+            "name",
+            "description",
+            "price",
+            "photo_url",
+            "user_id",
+          ],
+        },
+      ],
+    });
+
     res.status(201).json({
       success: true,
       message: "Item added to cart",
-      cartItem: cartItem,
+      cartItem: cartItemWithProduct,
     });
   } catch (error) {
     console.log(error);
