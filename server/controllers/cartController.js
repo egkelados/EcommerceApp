@@ -2,6 +2,54 @@ const path = require("path");
 const models = require("../models");
 const { where } = require("sequelize");
 
+exports.loadCart = async (req, res) => {
+  try {
+    // const userId = req.userId;
+    // console.log(userId);
+
+    const cart = await models.Cart.findOne({
+      where: {
+        user_id: 22,
+        is_active: true,
+      },
+      attributes: ["id", "user_id", "is_active"],
+      include: [
+        {
+          model: models.CartItem,
+          as: "cartItems",
+          attributes: ["id", "cart_id", "product_id", "quantity"],
+          include: [
+            {
+              model: models.Product,
+              as: "product",
+              attributes: [
+                "id",
+                "name",
+                "description",
+                "price",
+                "photo_url",
+                "user_id",
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Cart Items loaded successfully",
+      cart: cart,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error, Can not load your cart Items",
+    });
+  }
+};
+
 exports.addItemToCart = async (req, res) => {
   const { productId, quantity } = req.body;
 

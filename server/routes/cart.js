@@ -7,6 +7,6 @@ const authenticate = require("../middlewares/authMiddleware");
 router.post("/items", cartController.addItemToCart);
 
 // api /cart/user/:user_id
-// router.get("/user/:user_id", authenticate, cartController.getCartByUserId);
+router.get("/user/:user_id", cartController.loadCart);
 
 module.exports = router;
