@@ -77,3 +77,10 @@ struct AddToCartResponse: Codable {
   let cartItem: CartItem?
   let message: String?
 }
+
+
+struct CartResponse: Codable {
+  let success: Bool
+  let cart: Cart?
+  let message: String?
+}

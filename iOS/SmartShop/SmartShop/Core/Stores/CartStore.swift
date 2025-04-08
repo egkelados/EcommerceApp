@@ -11,6 +11,18 @@ class CartStore {
   }
 
   @MainActor
+  func loadCart() async throws {
+    let resource = Resource(url: CoreEndpoint.loadCart.url, modelType: CartResponse.self)
+
+    let response = try await httpCliend.load(resource)
+    if let cart = response.cart, response.success {
+      self.cart = cart
+    }else {
+      throw CartError.operationFailed(response.message ?? "Failed to load cart")
+    }
+  }
+
+  @MainActor
   func addCartItem(productId: Int, quantity: Int) async throws {
     let body = ["productId": productId, "quantity": quantity]
     let bodyData = try JSONEncoder().encode(body)
