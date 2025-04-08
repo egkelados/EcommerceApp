@@ -50,11 +50,16 @@ struct CartItemQuantityView: View {
           do {
             guard let productId = cartItem.product.id else { return }
             try await cartStore.updateItemQuantity(productId: productId, quantity: change)
-          }catch {
+          } catch {
             print(error)
           }
         case .delete:
-          print("delete Item Quantity")
+          do {
+            guard let cartItemId = cartItem.id else { return }
+            try await cartStore.deleteCartItem(id: cartItemId)
+          } catch {
+            print(error)
+          }
         }
       }
       self.quantityChangeType = nil

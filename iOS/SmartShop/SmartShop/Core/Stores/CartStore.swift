@@ -68,4 +68,22 @@ class CartStore {
       throw CartError.operationFailed(response.message ?? "Unknown error from the server")
     }
   }
+
+  func deleteCartItem(id: Int) async throws {
+    let resource = Resource(url: CoreEndpoint.delete(id).url, method: .delete, modelType: DeleteCartItemResponse.self)
+    let response = try await httpClient.load(resource)
+    if response.success {
+      if let cart = cart {
+        self.cart?.cartItems = cart.cartItems.filter{ $0.id != id }
+      }
+      print("Deleted")
+    } else {
+      throw CartError.operationFailed(response.message ?? "Unable to delete the item")
+    }
+  }
+}
+
+struct DeleteCartItemResponse: Codable {
+  let success: Bool
+  let message: String?
 }

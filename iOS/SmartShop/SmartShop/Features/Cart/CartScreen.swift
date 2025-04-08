@@ -5,7 +5,7 @@ struct CartScreen: View {
 
   var body: some View {
     List {
-      if let cart = cartStore.cart {
+      if let cart = cartStore.cart, !cart.cartItems.isEmpty {
         HStack {
           Text("Total: ")
             .font(.title)
