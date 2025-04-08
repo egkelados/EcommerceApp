@@ -56,6 +56,7 @@ struct CartItemListView: View {
 
 #Preview {
   CartItemListView(cartItems: Cart.preview.cartItems)
+    .environment(CartStore(httpClient: .development))
 }
 
 struct CartItemView: View {
@@ -76,6 +77,8 @@ struct CartItemView: View {
       VStack(alignment: .leading) {
         Text(cartItem.product.name)
         Text("\(cartItem.quantity) x \(cartItem.product.price, format: .currency(code: "USD"))")
+        
+        CartItemQuantityView(cartItem: cartItem)
       }
       
       Spacer()
@@ -85,4 +88,5 @@ struct CartItemView: View {
 
 #Preview {
   CartItemView(cartItem: Cart.preview.cartItems.first!)
+    .environment(CartStore(httpClient: .development))
 }

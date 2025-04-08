@@ -17,10 +17,11 @@ class CartStore {
   }
 
   var itemCount: Int {
-    cart?.cartItems.reduce(0, {total, cartItem in
-        total + cartItem.quantity
-    }) ?? 0
+    cart?.cartItems.reduce(0) { total, cartItem in
+      total + cartItem.quantity
+    } ?? 0
   }
+
   @MainActor
   func loadCart() async throws {
     let resource = Resource(url: CoreEndpoint.loadCart.url, modelType: CartResponse.self)
@@ -34,11 +35,16 @@ class CartStore {
   }
 
   @MainActor
+  func updateItemQuantity(productId: Int, quantity: Int) async throws {
+    try await addCartItem(productId: productId, quantity: quantity)
+  }
+
+  @MainActor
   func addCartItem(productId: Int, quantity: Int) async throws {
     let body = ["productId": productId, "quantity": quantity]
     let bodyData = try JSONEncoder().encode(body)
 
-    let resource = Resource(url: CoreEndpoint.addCartItem(productId).url, method: .post(bodyData), modelType: AddToCartResponse.self)
+    let resource = Resource(url: CoreEndpoint.addCartItem.url, method: .post(bodyData), modelType: AddToCartResponse.self)
 
     let response = try await httpClient.load(resource)
     if let cartItem = response.cartItem, response.success {

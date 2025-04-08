@@ -88,7 +88,7 @@ extension Cart {
   static var preview: Cart {
     return Cart(id: 1, userId: 99, cartItems: [
       CartItem(id: 12, product: Product(
-        id: 26,
+        id: 20,
         name: "Testing for chair",
         description: "This preview is for testing purposes.",
         price: 3999.0,
@@ -96,7 +96,7 @@ extension Cart {
         userId: 22
       ), quantity: 2),
       CartItem(id: 12, product: Product(
-        id: 26,
+        id: 27,
         name: "Wallpaper",
         description: "Wallapaper for your home and office.",
         price: 3999.0,
@@ -104,7 +104,7 @@ extension Cart {
         userId: 22
       ), quantity: 2),
       CartItem(id: 12, product: Product(
-        id: 26,
+        id: 27,
         name: "Superman",
         description: "Fantastic design for your home.",
         price: 3999.0,
@@ -112,7 +112,7 @@ extension Cart {
         userId: 22
       ), quantity: 2),
       CartItem(id: 12, product: Product(
-        id: 26,
+        id: 20,
         name: "Another one product",
         description: "This is a whatever you want.",
         price: 3999.0,
@@ -120,7 +120,7 @@ extension Cart {
         userId: 22
       ), quantity: 2),
       CartItem(id: 12, product: Product(
-        id: 26,
+        id: 27,
         name: "Wow image preview",
         description: "Random Image for testing",
         price: 3999.0,

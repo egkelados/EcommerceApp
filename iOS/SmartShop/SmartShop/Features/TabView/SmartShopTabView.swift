@@ -35,7 +35,7 @@ enum AppScreen: Hashable, Identifiable, CaseIterable {
           .requiresAuthentication()
       }
     case .cart:
-      Text("Cart")
+      CartScreen()
         .requiresAuthentication()
     case .profile:
       ProfileView()
