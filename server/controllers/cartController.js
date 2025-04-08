@@ -2,6 +2,34 @@ const path = require("path");
 const models = require("../models");
 const { where } = require("sequelize");
 
+exports.deleteCartItem = async (req, res) => {
+  try {
+    const { cartItemId } = req.params;
+    console.log(cartItemId);
+    //destroy the cart item by id
+    const cartItem = await models.CartItem.destroy({
+      where: {
+        id: cartItemId,
+      },
+    });
+    if (!cartItem) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Cart item not found" });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Cart item deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while deleting the cart item",
+    });
+  }
+};
+
 exports.loadCart = async (req, res) => {
   try {
     // const userId = req.userId;
