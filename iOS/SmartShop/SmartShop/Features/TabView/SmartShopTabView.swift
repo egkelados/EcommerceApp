@@ -64,4 +64,5 @@ struct SmartShopTabView: View {
     SmartShopTabView()
   }
   .environment(ProductStore(httpClient: .development))
+  .environment(CartStore(httpClient: .development))
 }

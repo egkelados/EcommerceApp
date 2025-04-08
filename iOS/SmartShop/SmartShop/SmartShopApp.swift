@@ -3,7 +3,7 @@ import SwiftUI
 @main
 struct SmartShopApp: App {
   @State private var productStore = ProductStore(httpClient: HTTPClient())
-  @State private var cartStore = CartStore(httpCliend: HTTPClient())
+  @State private var cartStore = CartStore(httpClient: HTTPClient())
 
   @AppStorage("userId") private var userId: String?
 

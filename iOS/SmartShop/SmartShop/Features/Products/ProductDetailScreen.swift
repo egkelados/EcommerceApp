@@ -64,5 +64,5 @@ struct ProductDetailScreen: View {
 // TODO: create reusable bitton view
 #Preview {
   ProductDetailScreen(product: Product.preview)
-    .environment(CartStore(httpCliend: HTTPClient.development))
+    .environment(CartStore(httpClient: HTTPClient.development))
 }

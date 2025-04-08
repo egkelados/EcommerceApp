@@ -26,4 +26,5 @@ struct ProductListScreen: View {
   NavigationStack {
     ProductListScreen()
   }.environment(ProductStore(httpClient: .development))
+    .environment(CartStore(httpClient: .development))
 }

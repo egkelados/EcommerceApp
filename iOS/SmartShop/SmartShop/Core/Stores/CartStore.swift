@@ -3,21 +3,32 @@ import Observation
 
 @Observable
 class CartStore {
-  let httpCliend: HTTPClient
+  let httpClient: HTTPClient
   var cart: Cart?
 
-  init(httpCliend: HTTPClient) {
-    self.httpCliend = httpCliend
+  init(httpClient: HTTPClient) {
+    self.httpClient = httpClient
   }
 
+  var total: Double {
+    cart?.cartItems.reduce(0.0) { total, cartItem in
+      total + (cartItem.product.price * Double(cartItem.quantity))
+    } ?? 00
+  }
+
+  var itemCount: Int {
+    cart?.cartItems.reduce(0, {total, cartItem in
+        total + cartItem.quantity
+    }) ?? 0
+  }
   @MainActor
   func loadCart() async throws {
     let resource = Resource(url: CoreEndpoint.loadCart.url, modelType: CartResponse.self)
 
-    let response = try await httpCliend.load(resource)
+    let response = try await httpClient.load(resource)
     if let cart = response.cart, response.success {
       self.cart = cart
-    }else {
+    } else {
       throw CartError.operationFailed(response.message ?? "Failed to load cart")
     }
   }
@@ -29,7 +40,7 @@ class CartStore {
 
     let resource = Resource(url: CoreEndpoint.addCartItem(productId).url, method: .post(bodyData), modelType: AddToCartResponse.self)
 
-    let response = try await httpCliend.load(resource)
+    let response = try await httpClient.load(resource)
     if let cartItem = response.cartItem, response.success {
       // initialize the cart if it is nil
       if cart == nil {

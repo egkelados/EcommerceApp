@@ -35,7 +35,7 @@ struct DeleteProductResponse: Codable {
 
 extension Product {
   static var preview: Product {
-    Product(id: 26, name: "Luxury chair", description: "This is one fantastic chair that will make you feel like a king or queen of the world ! It is made of the finest materials and has a design that is sure to turn heads.", price: 252.0, photoURL: URL(string: "http://localhost:8080/api/uploads/image-1743072840755.jpg"), userId: 5)
+    Product(id: 26, name: "Luxury chair", description: "This is one fantastic chair that will make you feel like a king or queen of the world ! It is made of the finest materials and has a design that is sure to turn heads.", price: 252.0, photoURL: URL(string: "http://localhost:8080/api/uploads/image-1744100466846.png"), userId: 26)
   }
 
   func encode() -> Data? {
@@ -78,9 +78,55 @@ struct AddToCartResponse: Codable {
   let message: String?
 }
 
-
 struct CartResponse: Codable {
   let success: Bool
   let cart: Cart?
   let message: String?
+}
+
+extension Cart {
+  static var preview: Cart {
+    return Cart(id: 1, userId: 99, cartItems: [
+      CartItem(id: 12, product: Product(
+        id: 26,
+        name: "Testing for chair",
+        description: "This preview is for testing purposes.",
+        price: 3999.0,
+        photoURL: URL(string: "https://picsum.photos/200/300"),
+        userId: 22
+      ), quantity: 2),
+      CartItem(id: 12, product: Product(
+        id: 26,
+        name: "Wallpaper",
+        description: "Wallapaper for your home and office.",
+        price: 3999.0,
+        photoURL: URL(string: "https://picsum.photos/200/300"),
+        userId: 22
+      ), quantity: 2),
+      CartItem(id: 12, product: Product(
+        id: 26,
+        name: "Superman",
+        description: "Fantastic design for your home.",
+        price: 3999.0,
+        photoURL: URL(string: "https://picsum.photos/200/300"),
+        userId: 22
+      ), quantity: 2),
+      CartItem(id: 12, product: Product(
+        id: 26,
+        name: "Another one product",
+        description: "This is a whatever you want.",
+        price: 3999.0,
+        photoURL: URL(string: "https://picsum.photos/200/300"),
+        userId: 22
+      ), quantity: 2),
+      CartItem(id: 12, product: Product(
+        id: 26,
+        name: "Wow image preview",
+        description: "Random Image for testing",
+        price: 3999.0,
+        photoURL: URL(string: "https://picsum.photos/200/300"),
+        userId: 22
+      ), quantity: 2)
+    ])
+  }
 }
