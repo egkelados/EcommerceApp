@@ -71,7 +71,7 @@ class HTTPClient: HTTPClientProtocol {
     if let token = Keychain<String>.get("jwttoken") {
       headers["Authorization"] = "Bearer \(token)"
     }
-    
+
     // add headers to the request
     for (key, value) in headers {
       request.setValue(value, forHTTPHeaderField: key)
@@ -105,6 +105,14 @@ class HTTPClient: HTTPClientProtocol {
 //    }
 
     let (data, response) = try await session.data(for: request)
+
+    // Log the raw JSON response
+    if let rawJSON = String(data: data, encoding: .utf8) {
+      print("Raw JSON Response:")
+      print(rawJSON)
+    } else {
+      print("Unable to convert data to String.")
+    }
 
     guard let httpResponse = response as? HTTPURLResponse else {
       throw NetworkError.invalidResponse
