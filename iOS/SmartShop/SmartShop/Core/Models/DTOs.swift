@@ -130,3 +130,33 @@ extension Cart {
     ])
   }
 }
+
+struct UserInfo: Codable {
+//  let id: Int?
+  let name: String
+  let lastName: String
+  let street: String
+  let city: String
+  let state: String
+  let country: String
+  let zipCode: String
+
+  private enum CodingKeys: String, CodingKey {
+    case name = "first_name"
+    case lastName = "last_name"
+    case zipCode = "zip_code"
+    case  street, city, state, country
+  }
+}
+
+struct UserInfoResponse: Codable {
+  let success: Bool
+  let user: UserInfo?
+  let message: String?
+}
+
+extension UserInfo {
+  func encode() -> Data? {
+    try? JSONEncoder().encode(self)
+  }
+}

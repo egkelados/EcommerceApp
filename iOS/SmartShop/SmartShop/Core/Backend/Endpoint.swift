@@ -20,6 +20,8 @@ enum CoreEndpoint: Endpoint {
   case addCartItem
   case loadCart
   case delete(Int)
+  case updateUserInfo
+  case loadUserInfo
 
   var path: String {
     switch self {
@@ -43,6 +45,10 @@ enum CoreEndpoint: Endpoint {
       return "cart/user"
     case let .delete(cartItemId):
       return "cart/item/\(cartItemId)"
+    case .updateUserInfo:
+      return "user"
+    case .loadUserInfo:
+      return "user"
     }
   }
 }

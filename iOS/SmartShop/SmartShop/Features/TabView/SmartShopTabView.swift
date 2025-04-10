@@ -38,8 +38,10 @@ enum AppScreen: Hashable, Identifiable, CaseIterable {
       CartScreen()
         .requiresAuthentication()
     case .profile:
-      ProfileView()
-        .requiresAuthentication()
+      NavigationStack {
+        ProfileView()
+          .requiresAuthentication()
+      }
     }
   }
 }

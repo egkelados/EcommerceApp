@@ -4,8 +4,19 @@ import SwiftUI
 struct SmartShopApp: App {
   @State private var productStore = ProductStore(httpClient: HTTPClient())
   @State private var cartStore = CartStore(httpClient: HTTPClient())
+  @State private var userStore = UserStore(httpClient: HTTPClient())
 
   @AppStorage("userId") private var userId: String?
+
+  private func loadUserAndCart() async {
+    do {
+      try await cartStore.loadCart()
+      try await userStore.loadUserInfo()
+
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
 
   var body: some Scene {
     WindowGroup {
@@ -13,14 +24,11 @@ struct SmartShopApp: App {
         .environment(\.authenticationController, .development)
         .environment(productStore)
         .environment(cartStore)
+        .environment(userStore)
         .environment(\.uploader, ImageUploader(httpClient: HTTPClient()))
         .task(id: userId) {
-          do {
-            if userId != nil {
-              try await cartStore.loadCart()
-            }
-          } catch {
-            print(error.localizedDescription)
+          if userId != nil {
+            await loadUserAndCart()
           }
         }
     }
