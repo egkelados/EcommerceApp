@@ -16,12 +16,20 @@ class CartStore {
     } ?? 00
   }
 
+  var cartQuantity: Int {
+    cart?.cartItems.reduce(0) { total, cartItem in
+      total + cartItem.quantity
+    } ?? 0
+  }
+
   var itemCount: Int {
     cart?.cartItems.reduce(0) { total, cartItem in
       total + cartItem.quantity
     } ?? 0
   }
 
+  func emptyCart() { cart?.cartItems.removeAll() }
+  
   @MainActor
   func loadCart() async throws {
     let resource = Resource(url: CoreEndpoint.loadCart.url, modelType: CartResponse.self)
@@ -74,7 +82,7 @@ class CartStore {
     let response = try await httpClient.load(resource)
     if response.success {
       if let cart = cart {
-        self.cart?.cartItems = cart.cartItems.filter{ $0.id != id }
+        self.cart?.cartItems = cart.cartItems.filter { $0.id != id }
       }
       print("Deleted")
     } else {

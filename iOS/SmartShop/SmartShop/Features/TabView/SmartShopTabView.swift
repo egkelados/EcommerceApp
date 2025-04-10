@@ -45,6 +45,7 @@ enum AppScreen: Hashable, Identifiable, CaseIterable {
 }
 
 struct SmartShopTabView: View {
+  @Environment(CartStore.self) private var cartStore
   @State private var selection: AppScreen?
   var body: some View {
     TabView(selection: $selection) {
@@ -54,6 +55,7 @@ struct SmartShopTabView: View {
         } label: {
           screen.label
         }
+        .badge(screen == .cart ? cartStore.cartQuantity : 0)
       }
     }
   }
