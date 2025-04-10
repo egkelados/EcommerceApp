@@ -6,8 +6,8 @@ const authenticate = require("../middlewares/authMiddleware");
 
 router.post("/items", cartController.addItemToCart);
 
-// api/cart/user/:user_id
-router.get("/user/:user_id", cartController.loadCart);
+// api/cart/user
+router.get("/user", cartController.loadCart);
 
 // api/cart/item/:cartItemId
 router.delete("/item/:cartItemId", cartController.deleteCartItem);
