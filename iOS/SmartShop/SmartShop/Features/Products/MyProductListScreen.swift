@@ -112,6 +112,6 @@ struct MyProductCellView: View {
 #Preview {
   NavigationStack {
     MyProductListScreen()
-      .environment(ProductStore(httpClient: .development))
+      .environment(ProductStore(httpClient: HTTPClient.development))
   }
 }

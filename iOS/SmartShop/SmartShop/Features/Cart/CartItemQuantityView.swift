@@ -69,5 +69,5 @@ struct CartItemQuantityView: View {
 
 #Preview {
   CartItemQuantityView(cartItem: Cart.preview.cartItems.first!)
-    .environment(CartStore(httpClient: .development))
+    .environment(CartStore(httpClient: HTTPClient.development))
 }

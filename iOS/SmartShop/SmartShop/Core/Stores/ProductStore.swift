@@ -5,9 +5,9 @@ import Observation
 class ProductStore {
   private(set) var products: [Product] = []
   private(set) var myProducts: [Product] = []
-  let httpClient: HTTPClient
+  let httpClient: HTTPClientProtocol
 
-  init(httpClient: HTTPClient) {
+  init(httpClient: HTTPClientProtocol = HTTPClient()) {
     self.httpClient = httpClient
   }
 

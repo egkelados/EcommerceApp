@@ -105,7 +105,7 @@ struct ProfileView: View {
 #Preview {
   NavigationStack {
     ProfileView()
-      .environment(CartStore(httpClient: .development))
-      .environment(UserStore(httpClient: .development))
+      .environment(CartStore(httpClient: HTTPClient.development))
+      .environment(UserStore(httpClient: HTTPClient.development))
   }
 }

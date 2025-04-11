@@ -40,7 +40,7 @@ struct CartScreen: View {
 #Preview {
   NavigationStack {
     CartScreen()
-      .environment(CartStore(httpClient: .development))
+      .environment(CartStore(httpClient: HTTPClient.development))
   }
 }
 
@@ -56,7 +56,7 @@ struct CartItemListView: View {
 
 #Preview {
   CartItemListView(cartItems: Cart.preview.cartItems)
-    .environment(CartStore(httpClient: .development))
+    .environment(CartStore(httpClient: HTTPClient.development))
 }
 
 struct CartItemView: View {
@@ -88,5 +88,5 @@ struct CartItemView: View {
 
 #Preview {
   CartItemView(cartItem: Cart.preview.cartItems.first!)
-    .environment(CartStore(httpClient: .development))
+    .environment(CartStore(httpClient: HTTPClient.development))
 }

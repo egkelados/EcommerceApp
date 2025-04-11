@@ -82,6 +82,6 @@ struct MyProductDetailScreen: View {
 #Preview {
   NavigationStack {
     MyProductDetailScreen(product: Product.preview)
-      .environment(ProductStore(httpClient: .development))
+      .environment(ProductStore(httpClient: HTTPClient.development))
   }
 }

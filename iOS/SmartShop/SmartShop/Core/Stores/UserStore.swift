@@ -4,9 +4,9 @@ import Observation
 @Observable
 class UserStore {
   var user: UserInfo?
-  private let httpClient: HTTPClient
+  private let httpClient: HTTPClientProtocol
 
-  init(httpClient: HTTPClient = HTTPClient()) {
+  init(httpClient: HTTPClientProtocol = HTTPClient()) {
     self.httpClient = httpClient
   }
 

@@ -3,10 +3,10 @@ import Observation
 
 @Observable
 class CartStore {
-  let httpClient: HTTPClient
+  let httpClient: HTTPClientProtocol
   var cart: Cart?
 
-  init(httpClient: HTTPClient) {
+  init(httpClient: HTTPClientProtocol = HTTPClient()) {
     self.httpClient = httpClient
   }
 

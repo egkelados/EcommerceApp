@@ -125,12 +125,12 @@ struct AddProductView: View {
   NavigationStack {
     AddProductView(product: Product.preview)
   }
-  .environment(ProductStore(httpClient: .development))
+  .environment(ProductStore(httpClient: HTTPClient.development))
 }
 
 #Preview {
   NavigationStack {
     AddProductView()
   }
-  .environment(ProductStore(httpClient: .development))
+  .environment(ProductStore(httpClient: HTTPClient.development))
 }
