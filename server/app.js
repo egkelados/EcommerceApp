@@ -8,6 +8,7 @@ const productRoutes = require("./routes/product");
 const cartRoutes = require("./routes/cart");
 const userRoutes = require("./routes/user");
 const authenticate = require("./middlewares/authMiddleware");
+const orderRoutes = require("./routes/order");
 
 app.use("/api/uploads", express.static("uploads")); // serve the iploads folder as static files
 
@@ -23,6 +24,8 @@ app.use("/api/products", productRoutes);
 app.use("/api/cart", authenticate, cartRoutes);
 // user routes
 app.use("/api/user", authenticate, userRoutes);
+// order routes
+app.use("/api/orders", authenticate, orderRoutes);
 
 //start the server
 app.listen(8080, () => {

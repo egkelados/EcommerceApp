@@ -2,6 +2,23 @@ const path = require("path");
 const models = require("../models");
 const { where } = require("sequelize");
 
+exports.updateCartStatus = async (cartId, isActive, transaction) => {
+  return await models.Cart.update(
+    { is_active: isActive },
+    {
+      where: { id: cartId, is_active: !isActive },
+      transaction,
+    }
+  );
+};
+
+exports.removeCartItems = async (cartId, transaction) => {
+  return await models.CartItem.destroy({
+    where: { cart_id: cartId },
+    transaction,
+  });
+};
+
 exports.deleteCartItem = async (req, res) => {
   try {
     const { cartItemId } = req.params;

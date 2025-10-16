@@ -1,8 +1,8 @@
 const models = require("../models");
+const cartController = require("./cartController");
 
 exports.createOrder = async (req, res) => {
-  const userId = 22; // dummy userId for testing
-  //   const userId = req.userId;
+  const userId = req.userId;
 
   const { total, order_items } = req.body;
 
@@ -11,7 +11,6 @@ exports.createOrder = async (req, res) => {
 
   try {
     //   create new order
-
     const newOrder = await models.Order.create(
       {
         user_id: userId,
@@ -19,6 +18,7 @@ exports.createOrder = async (req, res) => {
       },
       { transaction } // ensure the order is created in the transaction
     );
+
     //   create order items
     const orderItemsData = order_items.map((item) => ({
       order_id: newOrder.id,
@@ -31,10 +31,22 @@ exports.createOrder = async (req, res) => {
     });
 
     //get the active cart for the user
+    const cart = await models.Cart.findOne({
+      where: {
+        user_id: userId,
+        is_active: true,
+      },
+      attributes: ["id"],
+    });
 
-    //update cart status to be active = false
+    // Only update cart if it exists
+    if (cart) {
+      //update cart status to be active = false
+      await cartController.updateCartStatus(cart.id, false, transaction);
 
-    // clear cart items from the cart items table
+      // clear cart items from the cart items table
+      await cartController.removeCartItems(cart.id, transaction);
+    }
 
     // commit the transaction
     await transaction.commit();
