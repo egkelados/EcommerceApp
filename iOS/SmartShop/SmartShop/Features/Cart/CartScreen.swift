@@ -10,12 +10,12 @@ struct CartScreen: View {
           Text("Total: ")
             .font(.title)
             .fontDesign(.rounded)
-          Text(cartStore.total, format: .currency(code: "USD"))
+          Text(cart.total, format: .currency(code: "USD"))
             .font(.title).bold()
         }
 
         Button {} label: {
-          Text("Proceed to checkout ^[(\(cartStore.itemCount) Item](inflect: true))")
+          Text("Proceed to checkout ^[(\(cart.itemCount) Item](inflect: true))")
             .bold()
             .frame(maxWidth: .infinity)
             .padding()
@@ -77,10 +77,10 @@ struct CartItemView: View {
       VStack(alignment: .leading) {
         Text(cartItem.product.name)
         Text("\(cartItem.quantity) x \(cartItem.product.price, format: .currency(code: "USD"))")
-        
+
         CartItemQuantityView(cartItem: cartItem)
       }
-      
+
       Spacer()
     }
   }

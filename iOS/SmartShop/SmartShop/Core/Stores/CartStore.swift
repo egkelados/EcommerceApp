@@ -10,26 +10,14 @@ class CartStore {
     self.httpClient = httpClient
   }
 
-  var total: Double {
-    cart?.cartItems.reduce(0.0) { total, cartItem in
-      total + (cartItem.product.price * Double(cartItem.quantity))
-    } ?? 00
-  }
-
   var cartQuantity: Int {
     cart?.cartItems.reduce(0) { total, cartItem in
       total + cartItem.quantity
     } ?? 0
   }
 
-  var itemCount: Int {
-    cart?.cartItems.reduce(0) { total, cartItem in
-      total + cartItem.quantity
-    } ?? 0
-  }
-
   func emptyCart() { cart?.cartItems.removeAll() }
-  
+
   @MainActor
   func loadCart() async throws {
     let resource = Resource(url: CoreEndpoint.loadCart.url, modelType: CartResponse.self)
